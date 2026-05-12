@@ -11,8 +11,6 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0b0b0e;--panel:#121215;--card:#1a1a22;--border:#2a2a36;--text:#e8e8ed;--text2:#8a8a9a;--accent:#3b82f6;--accent-hover:#2563eb;--danger:#ef4444;--success:#22c55e;--orange:#f59e0b;--font:'Inter',system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',monospace}
 body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh;overflow:hidden;display:flex;flex-direction:column}
-
-/* Topbar */
 .topbar{display:flex;align-items:center;gap:4px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;overflow:hidden}
 .project-tabs{display:flex;align-items:center;gap:3px;overflow-x:auto;flex:1;min-width:0;padding:2px 0}
 .project-tabs::-webkit-scrollbar{height:2px}
@@ -21,16 +19,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .project-tab:hover{background:var(--card);color:var(--text)}
 .project-tab.active{background:var(--card);border-color:var(--border);color:var(--text)}
 .project-tab .tab-name{overflow:hidden;text-overflow:ellipsis;min-width:0}
-.project-tab .tab-close{display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;font-size:10px;opacity:0;transition:all .1s;flex-shrink:0;line-height:1}
+.project-tab .tab-close{display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;font-size:10px;opacity:0;transition:all .1s;flex-shrink:0}
 .project-tab:hover .tab-close{opacity:.5}
 .project-tab .tab-close:hover{opacity:1;background:rgba(239,68,68,.15);color:var(--danger)}
 .btn-new-tab{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:6px;border:1px dashed var(--border);background:transparent;color:var(--text2);font-size:11px;font-family:var(--font);cursor:pointer;transition:all .12s;white-space:nowrap;flex-shrink:0}
 .btn-new-tab:hover{border-color:var(--accent);color:var(--accent)}
-
-/* App */
 .app{display:flex;gap:28px;padding:20px 28px 28px;flex:1;min-height:0;max-width:1200px;margin:0 auto;width:100%;align-items:stretch}
-
-/* Preview */
 .preview-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:16px;min-width:0}
 .canvas-wrap{position:relative;background:var(--card);border-radius:18px;padding:20px;box-shadow:0 0 0 1px var(--border),0 20px 60px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
 .canvas-wrap::before{content:'';position:absolute;inset:20px;border-radius:10px;background-image:linear-gradient(45deg,var(--border) 25%,transparent 25%),linear-gradient(-45deg,var(--border) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--border) 75%),linear-gradient(-45deg,transparent 75%,var(--border) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;opacity:0.3;pointer-events:none}
@@ -40,8 +34,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .size-preset{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:10px;font-weight:500;font-family:var(--mono);cursor:pointer;transition:all .12s;min-width:32px}
 .size-preset:hover{background:var(--border);color:var(--text)}
 .size-preset.active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* Controls */
 .controls-panel{flex:1;min-width:0;max-width:460px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;padding-right:4px}
 .controls-panel::-webkit-scrollbar{width:4px}
 .controls-panel::-webkit-scrollbar-track{background:transparent}
@@ -49,8 +41,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .section{background:var(--panel);border-radius:12px;border:1px solid var(--border);padding:16px}
 .section-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .section-title .count{color:var(--text2);font-weight:400}
-
-/* Fields */
 .row{display:flex;gap:10px;align-items:flex-end}
 .row .field{flex:1}
 .field{margin-bottom:0}
@@ -68,8 +58,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .range-wrap{display:flex;align-items:center;gap:6px}
 .range-wrap input[type="range"]{flex:1}
 .range-val{font-size:11px;font-weight:500;color:var(--text);min-width:28px;text-align:right;font-family:var(--mono)}
-
-/* Layers */
 .layers-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:6px}
 .layers-header .section-title{margin-bottom:0}
 .btn-add{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:none;color:#fff;font-size:11px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .12s}
@@ -79,11 +67,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .btn-add-svg:hover{filter:brightness(1.1)}
 .add-group{display:flex;gap:4px}
 .add-group .btn-add{padding:6px 10px;font-size:10px}
-
-/* Export */
 .btn-export{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 20px;border-radius:7px;border:none;background:var(--success);color:#fff;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .12s;white-space:nowrap}
 .btn-export:hover{filter:brightness(1.1)}
-
 .layer-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;transition:border-color .15s}
 .layer-card:last-child{margin-bottom:0}
 .layer-card:hover{border-color:#3a3a48}
@@ -99,11 +84,29 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .btn-eye.hidden{opacity:.3}
 .btn-del{background:none;border:none;color:var(--text2);cursor:pointer;padding:2px 5px;border-radius:4px;font-size:13px;font-weight:500;font-family:var(--font);transition:all .1s;line-height:1}
 .btn-del:hover{color:var(--danger);background:rgba(239,68,68,.1)}
+.font-picker-trigger{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:7px 9px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;font-family:var(--font);cursor:pointer;transition:border-color .15s;width:100%;user-select:none}
+.font-picker-trigger:hover{border-color:var(--text2)}
+.font-picker-trigger svg{opacity:.5;flex-shrink:0;transition:transform .15s}
+.font-picker-trigger.open svg{transform:rotate(180deg)}
+.font-picker-panel{position:fixed;z-index:1000;background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);overflow:hidden;display:flex;flex-direction:column;max-height:340px;min-height:200px}
+.font-picker-search{width:100%;padding:8px 10px;border:none;border-bottom:1px solid var(--border);background:var(--panel);color:var(--text);font-size:12px;font-family:var(--font);outline:none}
+.font-picker-search::placeholder{color:var(--text2)}
+.font-picker-list{overflow-y:auto;flex:1}
+.font-picker-list::-webkit-scrollbar{width:4px}
+.font-picker-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.font-picker-section{padding:5px 10px 3px;font-size:9px;font-weight:600;letter-spacing:1px;color:var(--text2);text-transform:uppercase;background:var(--panel);border-bottom:1px solid var(--border);position:sticky;top:0}
+.font-picker-option{padding:6px 10px;font-size:12px;cursor:pointer;transition:background .08s;font-family:var(--font)}
+.font-picker-option:hover{background:var(--panel)}
+.font-picker-option.selected{color:var(--accent);background:rgba(59,130,246,.08)}
+.font-picker-option.highlighted{background:var(--panel)}
+.font-picker-footer{padding:6px 10px;border-top:1px solid var(--border);text-align:center}
+.font-picker-footer a{color:var(--text2);font-size:10px;text-decoration:none;transition:color .12s}
+.font-picker-footer a:hover{color:var(--accent)}
+.font-picker-empty{padding:16px 10px;text-align:center;color:var(--text2);font-size:11px}
+.font-picker-empty kbd{padding:1px 4px;border-radius:3px;border:1px solid var(--border);background:var(--panel);font-family:var(--mono);font-size:10px}
 .layer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .layer-grid .full{grid-column:1/-1}
 .empty-state{text-align:center;padding:24px 16px;color:var(--text2);font-size:12px}
-
-/* File upload */
 .upload-wrap{position:relative}
 .upload-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:5px;border:1px dashed var(--border);background:var(--panel);color:var(--text2);font-size:10px;font-family:var(--font);cursor:pointer;transition:all .12s;width:100%;justify-content:center}
 .upload-btn:hover{border-color:var(--text2);color:var(--text)}
@@ -112,7 +115,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .svg-status.loaded{color:var(--success)}
 .svg-status.error{color:var(--danger)}
 .svg-status.loading{color:var(--orange)}
-
 @media(max-width:860px){.app{flex-direction:column;align-items:center;padding:16px 16px 20px;gap:20px;height:auto;overflow-y:auto}.controls-panel{max-width:100%;padding-right:0}.canvas-wrap{padding:14px}}
 @media(max-width:480px){.app{padding:12px;gap:14px}.section{padding:12px}.layer-grid{grid-template-columns:1fr}.layer-grid .full{grid-column:1}}
 </style>
@@ -126,11 +128,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 
 <div class="app">
   <div class="preview-panel">
-    <div class="canvas-wrap" id="canvasWrap">
+    <div class="canvas-wrap">
       <canvas id="previewCanvas" width="512" height="512"></canvas>
     </div>
     <div class="canvas-label" id="sizeLabel">512 &times; 512</div>
-    <div class="download-row" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
       <div style="display:flex;gap:6px;width:100%;max-width:260px">
         <div class="field" style="flex:1">
           <label>Export W</label>
@@ -198,9 +200,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 </div>
 
 <script>
-const STORAGE_KEY = 'favicon-studio-data';
+var STORAGE_KEY = 'favicon-studio-data';
 
-const state = {
+var state = {
   canvasW: 512,
   canvasH: 512,
   bgColor: '#2563eb',
@@ -209,12 +211,25 @@ const state = {
   nextId: 1
 };
 
-const canvas = document.getElementById('previewCanvas');
-const ctx = canvas.getContext('2d');
-const PRESETS = [16, 32, 48, 64, 128, 256, 512];
-const svgCache = new Map();
-
-let projectData = { currentId: null, projects: {} };
+var canvas = document.getElementById('previewCanvas');
+var ctx = canvas.getContext('2d');
+var PRESETS = [16, 32, 48, 64, 128, 256, 512];
+var svgCache = new Map();
+var RECOMMENDED_FONTS = [
+  'Inter','Roboto','Montserrat','Open Sans','Poppins','Lato','Oswald',
+  'Raleway','Ubuntu','Playfair Display','Fira Sans','Merriweather','Nunito',
+  'PT Sans','Source Sans 3','Work Sans','DM Sans','Manrope',
+  'Plus Jakarta Sans','Outfit','Sora','Lexend','Figtree','Onest',
+  'Noto Sans','Space Grotesk','Jost','Barlow','Mulish','Kanit',
+  'Nunito Sans','Archivo','Titillium Web','Rubik','Bebas Neue',
+  'Fraunces','Epilogue','Be Vietnam Pro','Syne','Clash Display',
+  'Cabinet Grotesk','General Sans','Satoshi','Zilla Slab','Cabin',
+  'Heebo','Assistant','Exo 2','Quicksand','Asap','M PLUS 1p',
+  'Arial','Helvetica'
+];
+var loadedFonts = {};
+var projectData = { currentId: null, projects: {} };
+var activeFontPicker = null;
 
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -226,9 +241,9 @@ function saveStorage() {
 
 function loadStorage() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    var raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw);
+      var parsed = JSON.parse(raw);
       if (parsed && parsed.currentId && parsed.projects) return parsed;
     }
   } catch (e) {}
@@ -236,7 +251,7 @@ function loadStorage() {
 }
 
 function persistState() {
-  const proj = projectData.projects[projectData.currentId];
+  var proj = projectData.projects[projectData.currentId];
   if (!proj) return;
   proj.canvasW = state.canvasW;
   proj.canvasH = state.canvasH;
@@ -248,7 +263,7 @@ function persistState() {
 }
 
 function loadStateFromProject(id) {
-  const proj = projectData.projects[id];
+  var proj = projectData.projects[id];
   if (!proj) return;
   state.canvasW = proj.canvasW;
   state.canvasH = proj.canvasH;
@@ -259,15 +274,16 @@ function loadStateFromProject(id) {
   canvas.width = state.canvasW;
   canvas.height = state.canvasH;
   svgCache.clear();
-  // reload SVG caches
-  for (const layer of state.layers) {
-    if (layer.type === 'svg' && layer.content) loadSVGLayer(layer);
+  for (var i = 0; i < state.layers.length; i++) {
+    if (state.layers[i].type === 'svg' && state.layers[i].content) {
+      loadSVGLayer(state.layers[i]);
+    }
   }
 }
 
 function makeDefaultProject(name) {
   return {
-    name,
+    name: name,
     canvasW: 512,
     canvasH: 512,
     bgColor: '#2563eb',
@@ -288,17 +304,21 @@ function makeDefaultProject(name) {
 }
 
 function init() {
-  const saved = loadStorage();
+  ensureFont('Inter');
+  var saved = loadStorage();
   if (saved) {
     projectData = saved;
-    const cur = projectData.projects[projectData.currentId];
+    var cur = projectData.projects[projectData.currentId];
     if (cur) {
       loadStateFromProject(projectData.currentId);
     } else {
-      const keys = Object.keys(projectData.projects);
+      var keys = Object.keys(projectData.projects);
       projectData.currentId = keys[0] || null;
-      if (projectData.currentId) loadStateFromProject(projectData.currentId);
-      else createDefaultProject();
+      if (projectData.currentId) {
+        loadStateFromProject(projectData.currentId);
+      } else {
+        createDefaultProject();
+      }
     }
   } else {
     createDefaultProject();
@@ -311,7 +331,7 @@ function init() {
 }
 
 function createDefaultProject() {
-  const id = uid();
+  var id = uid();
   projectData.currentId = id;
   projectData.projects[id] = makeDefaultProject('Logo 1');
   loadStateFromProject(id);
@@ -321,6 +341,7 @@ function createDefaultProject() {
 function switchProject(id) {
   if (id === projectData.currentId) return;
   persistState();
+  closeFontPicker();
   projectData.currentId = id;
   loadStateFromProject(id);
   buildProjectTabs();
@@ -331,16 +352,16 @@ function switchProject(id) {
 }
 
 function newProject() {
-  const count = Object.keys(projectData.projects).length + 1;
-  const id = uid();
+  var count = Object.keys(projectData.projects).length + 1;
+  var id = uid();
   projectData.projects[id] = makeDefaultProject('Logo ' + count);
   switchProject(id);
 }
 
 function renameProject(id) {
-  const proj = projectData.projects[id];
+  var proj = projectData.projects[id];
   if (!proj) return;
-  const name = prompt('Project name:', proj.name);
+  var name = prompt('Project name:', proj.name);
   if (name && name.trim()) {
     proj.name = name.trim();
     buildProjectTabs();
@@ -349,12 +370,13 @@ function renameProject(id) {
 }
 
 function deleteProject(id) {
-  const keys = Object.keys(projectData.projects);
+  var keys = Object.keys(projectData.projects);
   if (keys.length <= 1) return;
-  const proj = projectData.projects[id];
+  var proj = projectData.projects[id];
   if (!proj) return;
-  if (!confirm(`Delete "${proj.name}"?`)) return;
+  if (!confirm('Delete "' + proj.name + '"?')) return;
   delete projectData.projects[id];
+  closeFontPicker();
   if (projectData.currentId === id) {
     projectData.currentId = Object.keys(projectData.projects)[0];
     loadStateFromProject(projectData.currentId);
@@ -368,36 +390,55 @@ function deleteProject(id) {
 }
 
 function buildProjectTabs() {
-  const el = document.getElementById('projectTabs');
-  el.innerHTML = Object.entries(projectData.projects).map(([id, proj]) =>
-    `<button class="project-tab ${id===projectData.currentId?'active':''}" onclick="switchProject('${id}')" ondblclick="renameProject('${id}')" title="Double-click to rename">
-      <span class="tab-name">${escapeHtml(proj.name)}</span>
-      <span class="tab-close" onclick="event.stopPropagation();deleteProject('${id}')">\u2715</span>
-    </button>`
-  ).join('');
-  // scroll active into view
-  const active = el.querySelector('.project-tab.active');
-  if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  var el = document.getElementById('projectTabs');
+  var html = '';
+  var ids = Object.keys(projectData.projects);
+  for (var i = 0; i < ids.length; i++) {
+    var id = ids[i];
+    var proj = projectData.projects[id];
+    var active = id === projectData.currentId ? ' active' : '';
+    html += '<button class="project-tab' + active + '" onclick="switchProject(\'' + id + '\')" ondblclick="renameProject(\'' + id + '\')" title="Double-click to rename">';
+    html += '<span class="tab-name">' + escapeHtml(proj.name) + '</span>';
+    html += '<span class="tab-close" onclick="event.stopPropagation();deleteProject(\'' + id + '\')">\u2715</span>';
+    html += '</button>';
+  }
+  el.innerHTML = html;
+  var activeEl = el.querySelector('.project-tab.active');
+  if (activeEl) activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 }
 
 function buildExportPresets() {
-  document.getElementById('exportPresets').innerHTML = PRESETS.map(s =>
-    `<button class="size-preset ${s===48?'active':''}" onclick="setExportSize(${s},${s})">${s}</button>`
-  ).join('');
+  var el = document.getElementById('exportPresets');
+  var html = '';
+  for (var i = 0; i < PRESETS.length; i++) {
+    var s = PRESETS[i];
+    var active = s === 48 ? ' active' : '';
+    html += '<button class="size-preset' + active + '" onclick="setExportSize(' + s + ',' + s + ')">' + s + '</button>';
+  }
+  el.innerHTML = html;
 }
 
 function buildCanvasPresets() {
-  document.getElementById('canvasPresets').innerHTML = PRESETS.map(s =>
-    `<button class="size-preset ${s===512?'active':''}" onclick="setCanvasSizeTo(${s},${s})">${s}</button>`
-  ).join('');
+  var el = document.getElementById('canvasPresets');
+  var html = '';
+  for (var i = 0; i < PRESETS.length; i++) {
+    var s = PRESETS[i];
+    var active = s === 512 ? ' active' : '';
+    html += '<button class="size-preset' + active + '" onclick="setCanvasSizeTo(' + s + ',' + s + ')">' + s + '</button>';
+  }
+  el.innerHTML = html;
 }
 
 function setExportSize(w, h) {
   document.getElementById('exportW').value = w;
   document.getElementById('exportH').value = h;
-  document.querySelectorAll('#exportPresets .size-preset').forEach(b => {
-    b.classList.toggle('active', +b.textContent === w && w === h);
-  });
+  var presets = document.querySelectorAll('#exportPresets .size-preset');
+  for (var i = 0; i < presets.length; i++) {
+    presets[i].className = presets[i].className.replace(' active', '');
+    if (parseInt(presets[i].textContent) === w && w === h) {
+      presets[i].className += ' active';
+    }
+  }
 }
 
 function setCanvasSizeTo(w, h) {
@@ -407,18 +448,20 @@ function setCanvasSizeTo(w, h) {
 }
 
 function setCanvasSize() {
-  const w = Math.max(8, +document.getElementById('canvasW').value || state.canvasW);
-  const h = Math.max(8, +document.getElementById('canvasH').value || state.canvasH);
-  const rw = w / state.canvasW;
-  const rh = h / state.canvasH;
-  const ar = (rw + rh) / 2;
+  closeFontPicker();
+  var w = Math.max(8, parseInt(document.getElementById('canvasW').value) || state.canvasW);
+  var h = Math.max(8, parseInt(document.getElementById('canvasH').value) || state.canvasH);
+  var rw = w / state.canvasW;
+  var rh = h / state.canvasH;
+  var ar = (rw + rh) / 2;
 
   state.canvasW = w;
   state.canvasH = h;
   canvas.width = w;
   canvas.height = h;
 
-  for (const layer of state.layers) {
+  for (var i = 0; i < state.layers.length; i++) {
+    var layer = state.layers[i];
     layer.offsetX = Math.round(layer.offsetX * ar);
     layer.offsetY = Math.round(layer.offsetY * ar);
     if (layer.type === 'text') {
@@ -431,9 +474,13 @@ function setCanvasSize() {
 
   document.getElementById('canvasW').value = w;
   document.getElementById('canvasH').value = h;
-  document.querySelectorAll('#canvasPresets .size-preset').forEach(b => {
-    b.classList.toggle('active', +b.textContent === w && w === h);
-  });
+  var presets = document.querySelectorAll('#canvasPresets .size-preset');
+  for (var i = 0; i < presets.length; i++) {
+    presets[i].className = presets[i].className.replace(' active', '');
+    if (parseInt(presets[i].textContent) === w && w === h) {
+      presets[i].className += ' active';
+    }
+  }
   render();
   buildLayersUI();
   persistState();
@@ -456,7 +503,7 @@ function addTextLayer() {
 }
 
 function addSVGLayer() {
-  const defSize = Math.round(Math.min(state.canvasW, state.canvasH) * 0.4);
+  var defSize = Math.round(Math.min(state.canvasW, state.canvasH) * 0.4);
   state.layers.push({
     id: state.nextId++,
     type: 'svg', content: '',
@@ -468,18 +515,24 @@ function addSVGLayer() {
 
 function removeLayer(id) {
   if (state.layers.length <= 1) return;
-  state.layers = state.layers.filter(l => l.id !== id);
+  state.layers = state.layers.filter(function(l) { return l.id !== id; });
   svgCache.delete(id);
   render(); buildLayersUI(); persistState();
 }
 
 function toggleLayer(id) {
-  const layer = state.layers.find(l => l.id === id);
+  var layer = null;
+  for (var i = 0; i < state.layers.length; i++) {
+    if (state.layers[i].id === id) { layer = state.layers[i]; break; }
+  }
   if (layer) { layer.visible = !layer.visible; render(); persistState(); }
 }
 
 function updateLayer(id, prop, value) {
-  const layer = state.layers.find(l => l.id === id);
+  var layer = null;
+  for (var i = 0; i < state.layers.length; i++) {
+    if (state.layers[i].id === id) { layer = state.layers[i]; break; }
+  }
   if (!layer) return;
   if (prop === 'size' || prop === 'offsetX' || prop === 'offsetY' || prop === 'svgW' || prop === 'svgH') value = +value;
   if (prop === 'opacity') value = Math.min(1, Math.max(0, +value));
@@ -492,34 +545,165 @@ function updateLayer(id, prop, value) {
   persistState();
 }
 
-function loadSVGLayer(layer) {
-  if (!layer.content || layer.type !== 'svg') return;
-  const svg = layer.content.trim();
-  if (!svg.startsWith('<svg') && !svg.startsWith('<?xml')) return;
-  const img = new Image();
-  const url = 'data:image/svg+xml,' + encodeURIComponent(svg);
-  img.onload = () => { svgCache.set(layer.id, { img, loaded: true }); render(); };
-  img.onerror = () => { svgCache.set(layer.id, { img: null, loaded: false }); render(); };
-  svgCache.set(layer.id, { img, loaded: false, loading: true });
-  img.src = url;
+function ensureFont(name) {
+  if (loadedFonts[name]) return;
+  var sys = 'Arial,Helvetica,Times New Roman,Courier New,Georgia,Verdana,Tahoma,Trebuchet MS,Palatino,Garamond,Bookman,Comic Sans MS,Impact,Lucida Console,Lucida Sans,Segoe UI,Segoe Print,Segoe Script'.split(',');
+  for (var i = 0; i < sys.length; i++) {
+    if (sys[i] === name) { loadedFonts[name] = true; return; }
+  }
+  var id = 'gf__' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  if (document.getElementById(id)) { loadedFonts[name] = true; return; }
+  var link = document.createElement('link');
+  link.id = id;
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(name) + ':wght@100;200;300;400;500;600;700;800;900&display=swap';
+  document.head.appendChild(link);
+  loadedFonts[name] = true;
 }
 
-function getSVGImage(layer) {
-  if (!layer.content || layer.type !== 'svg') return null;
-  const entry = svgCache.get(layer.id);
-  return entry && entry.loaded ? entry.img : null;
+function closeFontPicker() {
+  if (activeFontPicker) {
+    activeFontPicker.panel.remove();
+    document.removeEventListener('mousedown', activeFontPicker.handler);
+    if (activeFontPicker.trigger) activeFontPicker.trigger.className = activeFontPicker.trigger.className.replace(' open', '');
+    activeFontPicker = null;
+  }
 }
 
-function preloadSVGLayer(layer) {
-  return new Promise(resolve => {
-    if (!layer.content || layer.type !== 'svg') return resolve(null);
-    const cached = svgCache.get(layer.id);
-    if (cached && cached.loaded) return resolve(cached.img);
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => resolve(null);
-    img.src = 'data:image/svg+xml,' + encodeURIComponent(layer.content);
+function openFontPicker(trigger, layerId, currentFont) {
+  closeFontPicker();
+  trigger.className += ' open';
+
+  var rect = trigger.getBoundingClientRect();
+  var panel = document.createElement('div');
+  panel.className = 'font-picker-panel';
+  var spaceBelow = window.innerHeight - rect.bottom;
+  var spaceAbove = rect.top;
+  var panelH = Math.min(340, Math.max(200, spaceBelow - 10));
+
+  if (spaceBelow < panelH && spaceAbove > spaceBelow) {
+    panel.style.bottom = (window.innerHeight - rect.top + 4) + 'px';
+    panel.style.left = rect.left + 'px';
+    panel.style.maxHeight = (spaceAbove - 10) + 'px';
+  } else {
+    panel.style.top = (rect.bottom + 4) + 'px';
+    panel.style.left = rect.left + 'px';
+    panel.style.maxHeight = panelH + 'px';
+  }
+  panel.style.width = Math.max(rect.width, 230) + 'px';
+
+  panel.innerHTML =
+    '<input class="font-picker-search" type="text" placeholder="Search or type any font..." value="' + escapeHtml(currentFont) + '" spellcheck="false">' +
+    '<div class="font-picker-list"></div>' +
+    '<div class="font-picker-footer"><a href="https://fonts.google.com" target="_blank" rel="noopener">Browse all fonts on fonts.google.com \u2192</a></div>';
+
+  document.body.appendChild(panel);
+
+  var handler = function(e) {
+    if (!panel.contains(e.target) && e.target !== trigger) {
+      closeFontPicker();
+    }
+  };
+  document.addEventListener('mousedown', handler);
+
+  activeFontPicker = { panel: panel, trigger: trigger, handler: handler };
+
+  var list = panel.querySelector('.font-picker-list');
+  var search = panel.querySelector('.font-picker-search');
+  search.focus();
+  search.setSelectionRange(search.value.length, search.value.length);
+
+  var hlIdx = -1;
+
+  function renderList(query) {
+    var q = query.toLowerCase().trim();
+    var filtered = [];
+    for (var i = 0; i < RECOMMENDED_FONTS.length; i++) {
+      if (!q || RECOMMENDED_FONTS[i].toLowerCase().indexOf(q) !== -1) {
+        filtered.push(RECOMMENDED_FONTS[i]);
+      }
+    }
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="font-picker-empty">No match. Press <kbd>Enter</kbd> to use <strong>' + escapeHtml(query.trim()) + '</strong></div>';
+      hlIdx = -1;
+      return;
+    }
+    var html = '<div class="font-picker-section">Recommended</div>';
+    for (var i = 0; i < filtered.length; i++) {
+      var f = filtered[i];
+      var cls = '';
+      if (f === currentFont) cls += ' selected';
+      if (i === 0 && q) cls += ' highlighted';
+      html += '<div class="font-picker-option' + cls + '" data-font="' + escapeHtml(f) + '">' + escapeHtml(f) + '</div>';
+    }
+    list.innerHTML = html;
+    hlIdx = (q ? 0 : -1);
+
+    var options = list.querySelectorAll('.font-picker-option');
+    for (var i = 0; i < options.length; i++) {
+      (function(idx) {
+        options[idx].addEventListener('click', function() {
+          var font = this.getAttribute('data-font');
+          ensureFont(font);
+          updateLayer(layerId, 'font', font);
+          closeFontPicker();
+        });
+      })(i);
+    }
+  }
+
+  renderList(search.value);
+
+  search.addEventListener('input', function() {
+    renderList(search.value);
   });
+
+  search.addEventListener('keydown', function(e) {
+    var options = list.querySelectorAll('.font-picker-option');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (hlIdx < options.length - 1) { hlIdx++; } else { hlIdx = 0; }
+      for (var i = 0; i < options.length; i++) {
+        if (i === hlIdx) { options[i].className += ' highlighted'; } else { options[i].className = options[i].className.replace(' highlighted', ''); }
+      }
+      if (options[hlIdx]) options[hlIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (hlIdx > 0) { hlIdx--; } else { hlIdx = options.length - 1; }
+      for (var i = 0; i < options.length; i++) {
+        if (i === hlIdx) { options[i].className += ' highlighted'; } else { options[i].className = options[i].className.replace(' highlighted', ''); }
+      }
+      if (options[hlIdx]) options[hlIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (hlIdx >= 0 && options[hlIdx]) {
+        var font = options[hlIdx].getAttribute('data-font');
+        ensureFont(font);
+        updateLayer(layerId, 'font', font);
+        closeFontPicker();
+      } else {
+        var val = search.value.trim();
+        if (val) {
+          ensureFont(val);
+          updateLayer(layerId, 'font', val);
+          closeFontPicker();
+        }
+      }
+    } else if (e.key === 'Escape') {
+      closeFontPicker();
+    }
+  });
+}
+
+function renderFontPicker(id, currentFont) {
+  var escaped = currentFont.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  return '<div class="font-picker-trigger" onclick="event.stopPropagation();openFontPicker(this,' + id + ",'" + escaped + "')\"><span>" + escapeHtml(currentFont) + '</span><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>';
+}
+
+function escapeHtml(str) {
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(String(str)));
+  return d.innerHTML;
 }
 
 function roundRect(c, x, y, w, h, r) {
@@ -538,31 +722,32 @@ function roundRect(c, x, y, w, h, r) {
 }
 
 function render() {
-  const w = state.canvasW, h = state.canvasH;
+  var w = state.canvasW, h = state.canvasH;
   ctx.clearRect(0, 0, w, h);
   ctx.save();
 
-  const r = Math.min(state.borderRadius, w / 2, h / 2);
+  var r = Math.min(state.borderRadius, w / 2, h / 2);
   roundRect(ctx, 0, 0, w, h, r);
   ctx.clip();
 
   ctx.fillStyle = state.bgColor;
   ctx.fillRect(0, 0, w, h);
 
-  for (const layer of state.layers) {
+  for (var i = 0; i < state.layers.length; i++) {
+    var layer = state.layers[i];
     if (!layer.visible || !layer.content) continue;
     if (layer.type === 'text') {
-      ctx.font = `${layer.size}px ${layer.font}, Arial, Helvetica, sans-serif`;
+      ctx.font = layer.size + 'px "' + layer.font + '", Arial, Helvetica, sans-serif';
       ctx.fillStyle = layer.color;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(layer.content, w / 2 + layer.offsetX, h / 2 + layer.offsetY);
     } else if (layer.type === 'svg') {
-      const img = getSVGImage(layer);
+      var img = getSVGImage(layer);
       if (img) {
         ctx.save();
-        ctx.globalAlpha = layer.opacity ?? 1;
-        const sw = layer.svgW || 100, sh = layer.svgH || 100;
+        ctx.globalAlpha = layer.opacity || 1;
+        var sw = layer.svgW || 100, sh = layer.svgH || 100;
         ctx.drawImage(img, w / 2 + layer.offsetX - sw / 2, h / 2 + layer.offsetY - sh / 2, sw, sh);
         ctx.restore();
       }
@@ -571,79 +756,113 @@ function render() {
 
   ctx.restore();
 
-  const maxPreview = 260;
-  const ps = Math.min(maxPreview / w, maxPreview / h);
+  var maxPreview = 260;
+  var ps = Math.min(maxPreview / w, maxPreview / h);
   canvas.style.width = (w * ps) + 'px';
   canvas.style.height = (h * ps) + 'px';
-  document.getElementById('sizeLabel').textContent = `${w} \u00d7 ${h}  \u00b7  Live Preview`;
+  document.getElementById('sizeLabel').textContent = w + ' \u00d7 ' + h + '  \u00b7  Live Preview';
+}
+
+function loadSVGLayer(layer) {
+  if (!layer.content || layer.type !== 'svg') return;
+  var svg = layer.content.trim();
+  if (svg.indexOf('<svg') !== 0 && svg.indexOf('<?xml') !== 0) return;
+  var img = new Image();
+  var url = 'data:image/svg+xml,' + encodeURIComponent(svg);
+  img.onload = function() { svgCache.set(layer.id, { img: img, loaded: true }); render(); };
+  img.onerror = function() { svgCache.set(layer.id, { img: null, loaded: false }); render(); };
+  svgCache.set(layer.id, { img: img, loaded: false, loading: true });
+  img.src = url;
+}
+
+function getSVGImage(layer) {
+  if (!layer.content || layer.type !== 'svg') return null;
+  var entry = svgCache.get(layer.id);
+  return entry && entry.loaded ? entry.img : null;
+}
+
+function preloadSVGLayer(layer) {
+  return new Promise(function(resolve) {
+    if (!layer.content || layer.type !== 'svg') { resolve(null); return; }
+    var cached = svgCache.get(layer.id);
+    if (cached && cached.loaded) { resolve(cached.img); return; }
+    var img = new Image();
+    img.onload = function() { resolve(img); };
+    img.onerror = function() { resolve(null); };
+    img.src = 'data:image/svg+xml,' + encodeURIComponent(layer.content);
+  });
 }
 
 function buildLayersUI() {
-  const container = document.getElementById('layersContainer');
-  document.getElementById('layerCount').textContent = `(${state.layers.length})`;
+  var container = document.getElementById('layersContainer');
+  document.getElementById('layerCount').textContent = '(' + state.layers.length + ')';
 
   if (state.layers.length === 0) {
     container.innerHTML = '<div class="empty-state">No layers. Add text or SVG to get started.</div>';
     return;
   }
 
-  const maxOff = Math.max(state.canvasW, state.canvasH) / 2;
-  let html = '';
+  var maxOff = Math.max(state.canvasW, state.canvasH) / 2;
+  var html = '';
 
-  for (const layer of state.layers) {
-    const id = layer.id;
-    const idx = state.layers.indexOf(layer);
-    const isHidden = !layer.visible;
-    const isSVG = layer.type === 'svg';
-    const cached = svgCache.get(id);
+  for (var idx = 0; idx < state.layers.length; idx++) {
+    var layer = state.layers[idx];
+    var id = layer.id;
+    var isHidden = !layer.visible;
+    var isSVG = layer.type === 'svg';
+    var cached = svgCache.get(id);
 
-    html += `<div class="layer-card"><div class="layer-head">`;
-    html += `<div class="layer-label"><span class="layer-num">#${idx+1}</span><span class="layer-badge ${isSVG?'svg':'text'}">${isSVG?'SVG':'T'}</span>`;
-    html += isSVG
-      ? (layer.content ? 'SVG' : '<span style="color:var(--text2);font-weight:400">empty</span>')
-      : (layer.content || '<span style="color:var(--text2);font-weight:400">empty</span>');
-    html += `</div><div class="layer-actions">`;
-    html += `<button class="btn-eye ${isHidden?'hidden':''}" onclick="toggleLayer(${id})" title="Toggle visibility">${isHidden
-      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
-      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'}</button>`;
-    html += `<button class="btn-del" onclick="removeLayer(${id})" title="Delete">\u2715</button>`;
-    html += `</div></div><div class="layer-grid">`;
+    html += '<div class="layer-card"><div class="layer-head">';
+    html += '<div class="layer-label"><span class="layer-num">#' + (idx + 1) + '</span><span class="layer-badge ' + (isSVG ? 'svg' : 'text') + '">' + (isSVG ? 'SVG' : 'T') + '</span>';
+    if (isSVG) {
+      html += layer.content ? 'SVG' : '<span style="color:var(--text2);font-weight:400">empty</span>';
+    } else {
+      html += layer.content || '<span style="color:var(--text2);font-weight:400">empty</span>';
+    }
+    html += '</div><div class="layer-actions">';
+
+    html += '<button class="btn-eye' + (isHidden ? ' hidden' : '') + '" onclick="toggleLayer(' + id + ')" title="Toggle visibility">';
+    if (isHidden) {
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    } else {
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    }
+    html += '</button>';
+
+    html += '<button class="btn-del" onclick="removeLayer(' + id + ')" title="Delete">\u2715</button>';
+    html += '</div></div><div class="layer-grid">';
 
     if (!isSVG) {
-      html += `<div class="full"><label>Text</label><input type="text" value="${escapeHtml(layer.content)}" oninput="updateLayer(${id},'content',this.value)" placeholder="Type something..."></div>`;
-      html += `<div><label>Font</label><select onchange="updateLayer(${id},'font',this.value)">${['Inter','Roboto','Arial','Helvetica'].map(f => `<option ${layer.font===f?'selected':''}>${f}</option>`).join('')}</select></div>`;
-      html += `<div><label>Size</label><div class="range-wrap"><input type="range" min="1" max="${Math.max(state.canvasW,state.canvasH)}" value="${layer.size}" oninput="updateLayer(${id},'size',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.size}</span></div></div>`;
-      html += `<div><label>Color</label><input type="color" value="${layer.color}" oninput="updateLayer(${id},'color',this.value)"></div>`;
+      html += '<div class="full"><label>Text</label><input type="text" value="' + escapeHtml(layer.content) + '" oninput="updateLayer(' + id + ',\'content\',this.value)" placeholder="Type something..."></div>';
+      html += '<div><label>Font</label>' + renderFontPicker(id, layer.font) + '</div>';
+      html += '<div><label>Size</label><div class="range-wrap"><input type="range" min="1" max="' + Math.max(state.canvasW, state.canvasH) + '" value="' + layer.size + '" oninput="updateLayer(' + id + ',\'size\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + layer.size + '</span></div></div>';
+      html += '<div><label>Color</label><input type="color" value="' + layer.color + '" oninput="updateLayer(' + id + ',\'color\',this.value)"></div>';
     } else {
-      html += `<div class="full"><label>SVG Code</label><textarea onchange="updateLayer(${id},'content',this.value)" placeholder="<svg>...</svg>">${escapeHtml(layer.content)}</textarea></div>`;
-      html += `<div class="full"><div class="upload-wrap"><span class="upload-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload .svg file</span><input type="file" accept=".svg" onchange="uploadSVG(${id},this)"></div>`;
-      const st = cached ? (cached.loaded ? 'loaded' : cached.error ? 'error' : 'loading') : '';
-      if (st) html += `<div class="svg-status ${st}">${st==='loaded'?'\u2713 Loaded':st==='error'?'\u2717 Error':'\u23f3 Loading...'}</div>`;
-      html += `</div>`;
-      html += `<div><label>Width</label><div class="range-wrap"><input type="range" min="4" max="${Math.max(state.canvasW,state.canvasH)}" value="${layer.svgW||100}" oninput="updateLayer(${id},'svgW',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.svgW||100}</span></div></div>`;
-      html += `<div><label>Height</label><div class="range-wrap"><input type="range" min="4" max="${Math.max(state.canvasW,state.canvasH)}" value="${layer.svgH||100}" oninput="updateLayer(${id},'svgH',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.svgH||100}</span></div></div>`;
-      html += `<div><label>Opacity</label><div class="range-wrap"><input type="range" min="0" max="1" step="0.05" value="${layer.opacity??1}" oninput="updateLayer(${id},'opacity',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.opacity??1}</span></div></div>`;
+      html += '<div class="full"><label>SVG Code</label><textarea onchange="updateLayer(' + id + ',\'content\',this.value)" placeholder="<svg>...</svg>">' + escapeHtml(layer.content) + '</textarea></div>';
+      html += '<div class="full"><div class="upload-wrap"><span class="upload-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload .svg file</span><input type="file" accept=".svg" onchange="uploadSVG(' + id + ',this)"></div>';
+      var st = cached ? (cached.loaded ? 'loaded' : cached.error ? 'error' : 'loading') : '';
+      if (st) {
+        html += '<div class="svg-status ' + st + '">' + (st === 'loaded' ? '\u2713 Loaded' : st === 'error' ? '\u2717 Error' : '\u23f3 Loading...') + '</div>';
+      }
+      html += '</div>';
+      html += '<div><label>Width</label><div class="range-wrap"><input type="range" min="4" max="' + Math.max(state.canvasW, state.canvasH) + '" value="' + (layer.svgW || 100) + '" oninput="updateLayer(' + id + ',\'svgW\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + (layer.svgW || 100) + '</span></div></div>';
+      html += '<div><label>Height</label><div class="range-wrap"><input type="range" min="4" max="' + Math.max(state.canvasW, state.canvasH) + '" value="' + (layer.svgH || 100) + '" oninput="updateLayer(' + id + ',\'svgH\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + (layer.svgH || 100) + '</span></div></div>';
+      html += '<div><label>Opacity</label><div class="range-wrap"><input type="range" min="0" max="1" step="0.05" value="' + (layer.opacity || 1) + '" oninput="updateLayer(' + id + ',\'opacity\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + (layer.opacity || 1) + '</span></div></div>';
     }
 
-    html += `<div><label>X Offset</label><div class="range-wrap"><input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetX}" oninput="updateLayer(${id},'offsetX',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.offsetX}</span></div></div>`;
-    html += `<div><label>Y Offset</label><div class="range-wrap"><input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetY}" oninput="updateLayer(${id},'offsetY',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.offsetY}</span></div></div>`;
-    html += `</div></div>`;
+    html += '<div><label>X Offset</label><div class="range-wrap"><input type="range" min="' + (-maxOff) + '" max="' + maxOff + '" value="' + layer.offsetX + '" oninput="updateLayer(' + id + ',\'offsetX\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + layer.offsetX + '</span></div></div>';
+    html += '<div><label>Y Offset</label><div class="range-wrap"><input type="range" min="' + (-maxOff) + '" max="' + maxOff + '" value="' + layer.offsetY + '" oninput="updateLayer(' + id + ',\'offsetY\',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">' + layer.offsetY + '</span></div></div>';
+    html += '</div></div>';
   }
 
   container.innerHTML = html;
 }
 
-function escapeHtml(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
-}
-
 function uploadSVG(id, input) {
-  const file = input.files[0];
+  var file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
+  var reader = new FileReader();
+  reader.onload = function(e) {
     updateLayer(id, 'content', e.target.result);
     buildLayersUI();
     input.value = '';
@@ -652,44 +871,50 @@ function uploadSVG(id, input) {
 }
 
 async function doExport() {
-  const btn = document.getElementById('exportBtn');
+  var btn = document.getElementById('exportBtn');
   btn.textContent = 'Rendering...';
   btn.disabled = true;
 
-  const svgLayers = state.layers.filter(l => l.type === 'svg' && l.content);
-  await Promise.all(svgLayers.map(preloadSVGLayer));
+  var svgLayers = [];
+  for (var i = 0; i < state.layers.length; i++) {
+    if (state.layers[i].type === 'svg' && state.layers[i].content) {
+      svgLayers.push(state.layers[i]);
+    }
+  }
+  await Promise.all(svgLayers.map(function(l) { return preloadSVGLayer(l); }));
 
-  const w = Math.max(1, +document.getElementById('exportW').value || 48);
-  const h = Math.max(1, +document.getElementById('exportH').value || 48);
-  const s = document.createElement('canvas');
+  var w = Math.max(1, parseInt(document.getElementById('exportW').value) || 48);
+  var h = Math.max(1, parseInt(document.getElementById('exportH').value) || 48);
+  var s = document.createElement('canvas');
   s.width = w; s.height = h;
-  const c = s.getContext('2d');
-  const sx = w / state.canvasW;
-  const sy = h / state.canvasH;
+  var c = s.getContext('2d');
+  var sx = w / state.canvasW;
+  var sy = h / state.canvasH;
 
   c.clearRect(0, 0, w, h);
   c.save();
 
-  const r = Math.min(state.borderRadius * Math.min(sx, sy), w / 2, h / 2);
+  var r = Math.min(state.borderRadius * Math.min(sx, sy), w / 2, h / 2);
   roundRect(c, 0, 0, w, h, r);
   c.clip();
   c.fillStyle = state.bgColor;
   c.fillRect(0, 0, w, h);
 
-  for (const layer of state.layers) {
+  for (var i = 0; i < state.layers.length; i++) {
+    var layer = state.layers[i];
     if (!layer.visible || !layer.content) continue;
     if (layer.type === 'text') {
-      c.font = `${layer.size * sx}px ${layer.font}, Arial, Helvetica, sans-serif`;
+      c.font = (layer.size * sx) + 'px "' + layer.font + '", Arial, Helvetica, sans-serif';
       c.fillStyle = layer.color;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       c.fillText(layer.content, w / 2 + layer.offsetX * sx, h / 2 + layer.offsetY * sy);
     } else if (layer.type === 'svg') {
-      const img = getSVGImage(layer) || await preloadSVGLayer(layer);
+      var img = getSVGImage(layer) || await preloadSVGLayer(layer);
       if (img) {
         c.save();
-        c.globalAlpha = layer.opacity ?? 1;
-        const sw = (layer.svgW || 100) * sx, sh = (layer.svgH || 100) * sy;
+        c.globalAlpha = layer.opacity || 1;
+        var sw = (layer.svgW || 100) * sx, sh = (layer.svgH || 100) * sy;
         c.drawImage(img, w / 2 + layer.offsetX * sx - sw / 2, h / 2 + layer.offsetY * sy - sh / 2, sw, sh);
         c.restore();
       }
@@ -697,8 +922,8 @@ async function doExport() {
   }
 
   c.restore();
-  const a = document.createElement('a');
-  a.download = `favicon-${w}x${h}.png`;
+  var a = document.createElement('a');
+  a.download = 'favicon-' + w + 'x' + h + '.png';
   a.href = s.toDataURL('image/png');
   a.click();
 
@@ -706,7 +931,7 @@ async function doExport() {
   btn.disabled = false;
 }
 
-document.fonts.ready.then(() => render());
+document.fonts.ready.then(function() { render(); });
 init();
 </script>
 </body>
