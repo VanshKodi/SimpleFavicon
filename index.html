@@ -10,8 +10,25 @@
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0b0b0e;--panel:#121215;--card:#1a1a22;--border:#2a2a36;--text:#e8e8ed;--text2:#8a8a9a;--accent:#3b82f6;--accent-hover:#2563eb;--danger:#ef4444;--success:#22c55e;--orange:#f59e0b;--font:'Inter',system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',monospace}
-body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.app{display:flex;gap:28px;padding:28px;height:100vh;width:100vw;max-width:1200px;margin:0 auto;align-items:stretch}
+body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+
+/* Topbar */
+.topbar{display:flex;align-items:center;gap:4px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--border);flex-shrink:0;overflow:hidden}
+.project-tabs{display:flex;align-items:center;gap:3px;overflow-x:auto;flex:1;min-width:0;padding:2px 0}
+.project-tabs::-webkit-scrollbar{height:2px}
+.project-tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.project-tab{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--text2);font-size:12px;font-family:var(--font);cursor:pointer;transition:all .12s;white-space:nowrap;flex-shrink:0;max-width:180px;user-select:none}
+.project-tab:hover{background:var(--card);color:var(--text)}
+.project-tab.active{background:var(--card);border-color:var(--border);color:var(--text)}
+.project-tab .tab-name{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.project-tab .tab-close{display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:3px;font-size:10px;opacity:0;transition:all .1s;flex-shrink:0;line-height:1}
+.project-tab:hover .tab-close{opacity:.5}
+.project-tab .tab-close:hover{opacity:1;background:rgba(239,68,68,.15);color:var(--danger)}
+.btn-new-tab{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;border-radius:6px;border:1px dashed var(--border);background:transparent;color:var(--text2);font-size:11px;font-family:var(--font);cursor:pointer;transition:all .12s;white-space:nowrap;flex-shrink:0}
+.btn-new-tab:hover{border-color:var(--accent);color:var(--accent)}
+
+/* App */
+.app{display:flex;gap:28px;padding:20px 28px 28px;flex:1;min-height:0;max-width:1200px;margin:0 auto;width:100%;align-items:stretch}
 
 /* Preview */
 .preview-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:16px;min-width:0}
@@ -91,19 +108,22 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 .upload-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:5px;border:1px dashed var(--border);background:var(--panel);color:var(--text2);font-size:10px;font-family:var(--font);cursor:pointer;transition:all .12s;width:100%;justify-content:center}
 .upload-btn:hover{border-color:var(--text2);color:var(--text)}
 .upload-wrap input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
-
-/* SVG status */
 .svg-status{font-size:10px;color:var(--text2);font-family:var(--mono);display:flex;align-items:center;gap:4px}
 .svg-status.loaded{color:var(--success)}
 .svg-status.error{color:var(--danger)}
 .svg-status.loading{color:var(--orange)}
 
-/* Responsive */
-@media(max-width:860px){.app{flex-direction:column;align-items:center;padding:16px;gap:20px;height:auto;overflow-y:auto}.controls-panel{max-width:100%;padding-right:0}.canvas-wrap{padding:14px}}
+@media(max-width:860px){.app{flex-direction:column;align-items:center;padding:16px 16px 20px;gap:20px;height:auto;overflow-y:auto}.controls-panel{max-width:100%;padding-right:0}.canvas-wrap{padding:14px}}
 @media(max-width:480px){.app{padding:12px;gap:14px}.section{padding:12px}.layer-grid{grid-template-columns:1fr}.layer-grid .full{grid-column:1}}
 </style>
 </head>
 <body>
+
+<div class="topbar">
+  <div class="project-tabs" id="projectTabs"></div>
+  <button class="btn-new-tab" onclick="newProject()" title="New project">+ New</button>
+</div>
+
 <div class="app">
   <div class="preview-panel">
     <div class="canvas-wrap" id="canvasWrap">
@@ -178,6 +198,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh
 </div>
 
 <script>
+const STORAGE_KEY = 'favicon-studio-data';
+
 const state = {
   canvasW: 512,
   canvasH: 512,
@@ -192,22 +214,170 @@ const ctx = canvas.getContext('2d');
 const PRESETS = [16, 32, 48, 64, 128, 256, 512];
 const svgCache = new Map();
 
+let projectData = { currentId: null, projects: {} };
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+function saveStorage() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(projectData)); } catch (e) {}
+}
+
+function loadStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.currentId && parsed.projects) return parsed;
+    }
+  } catch (e) {}
+  return null;
+}
+
+function persistState() {
+  const proj = projectData.projects[projectData.currentId];
+  if (!proj) return;
+  proj.canvasW = state.canvasW;
+  proj.canvasH = state.canvasH;
+  proj.bgColor = state.bgColor;
+  proj.borderRadius = state.borderRadius;
+  proj.layers = state.layers;
+  proj.nextId = state.nextId;
+  saveStorage();
+}
+
+function loadStateFromProject(id) {
+  const proj = projectData.projects[id];
+  if (!proj) return;
+  state.canvasW = proj.canvasW;
+  state.canvasH = proj.canvasH;
+  state.bgColor = proj.bgColor;
+  state.borderRadius = proj.borderRadius;
+  state.layers = proj.layers;
+  state.nextId = proj.nextId;
+  canvas.width = state.canvasW;
+  canvas.height = state.canvasH;
+  svgCache.clear();
+  // reload SVG caches
+  for (const layer of state.layers) {
+    if (layer.type === 'svg' && layer.content) loadSVGLayer(layer);
+  }
+}
+
+function makeDefaultProject(name) {
+  return {
+    name,
+    canvasW: 512,
+    canvasH: 512,
+    bgColor: '#2563eb',
+    borderRadius: 24,
+    layers: [{
+      id: 1,
+      type: 'text',
+      content: 'VK',
+      font: 'Inter',
+      size: 180,
+      color: '#ffffff',
+      offsetX: 125,
+      offsetY: 125,
+      visible: true
+    }],
+    nextId: 2
+  };
+}
+
 function init() {
-  state.layers.push({
-    id: state.nextId++,
-    type: 'text',
-    content: 'VK',
-    font: 'Inter',
-    size: 180,
-    color: '#ffffff',
-    offsetX: 125,
-    offsetY: 125,
-    visible: true
-  });
+  const saved = loadStorage();
+  if (saved) {
+    projectData = saved;
+    const cur = projectData.projects[projectData.currentId];
+    if (cur) {
+      loadStateFromProject(projectData.currentId);
+    } else {
+      const keys = Object.keys(projectData.projects);
+      projectData.currentId = keys[0] || null;
+      if (projectData.currentId) loadStateFromProject(projectData.currentId);
+      else createDefaultProject();
+    }
+  } else {
+    createDefaultProject();
+  }
+  buildProjectTabs();
   buildExportPresets();
   buildCanvasPresets();
   render();
   buildLayersUI();
+}
+
+function createDefaultProject() {
+  const id = uid();
+  projectData.currentId = id;
+  projectData.projects[id] = makeDefaultProject('Logo 1');
+  loadStateFromProject(id);
+  saveStorage();
+}
+
+function switchProject(id) {
+  if (id === projectData.currentId) return;
+  persistState();
+  projectData.currentId = id;
+  loadStateFromProject(id);
+  buildProjectTabs();
+  buildExportPresets();
+  buildCanvasPresets();
+  render();
+  buildLayersUI();
+}
+
+function newProject() {
+  const count = Object.keys(projectData.projects).length + 1;
+  const id = uid();
+  projectData.projects[id] = makeDefaultProject('Logo ' + count);
+  switchProject(id);
+}
+
+function renameProject(id) {
+  const proj = projectData.projects[id];
+  if (!proj) return;
+  const name = prompt('Project name:', proj.name);
+  if (name && name.trim()) {
+    proj.name = name.trim();
+    buildProjectTabs();
+    saveStorage();
+  }
+}
+
+function deleteProject(id) {
+  const keys = Object.keys(projectData.projects);
+  if (keys.length <= 1) return;
+  const proj = projectData.projects[id];
+  if (!proj) return;
+  if (!confirm(`Delete "${proj.name}"?`)) return;
+  delete projectData.projects[id];
+  if (projectData.currentId === id) {
+    projectData.currentId = Object.keys(projectData.projects)[0];
+    loadStateFromProject(projectData.currentId);
+  }
+  buildProjectTabs();
+  buildExportPresets();
+  buildCanvasPresets();
+  render();
+  buildLayersUI();
+  saveStorage();
+}
+
+function buildProjectTabs() {
+  const el = document.getElementById('projectTabs');
+  el.innerHTML = Object.entries(projectData.projects).map(([id, proj]) =>
+    `<button class="project-tab ${id===projectData.currentId?'active':''}" onclick="switchProject('${id}')" ondblclick="renameProject('${id}')" title="Double-click to rename">
+      <span class="tab-name">${escapeHtml(proj.name)}</span>
+      <span class="tab-close" onclick="event.stopPropagation();deleteProject('${id}')">\u2715</span>
+    </button>`
+  ).join('');
+  // scroll active into view
+  const active = el.querySelector('.project-tab.active');
+  if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
 }
 
 function buildExportPresets() {
@@ -237,8 +407,8 @@ function setCanvasSizeTo(w, h) {
 }
 
 function setCanvasSize() {
-  const w = Math.max(8, +document.getElementById('canvasW').value || 512);
-  const h = Math.max(8, +document.getElementById('canvasH').value || 512);
+  const w = Math.max(8, +document.getElementById('canvasW').value || state.canvasW);
+  const h = Math.max(8, +document.getElementById('canvasH').value || state.canvasH);
   const rw = w / state.canvasW;
   const rh = h / state.canvasH;
   const ar = (rw + rh) / 2;
@@ -266,10 +436,11 @@ function setCanvasSize() {
   });
   render();
   buildLayersUI();
+  persistState();
 }
 
-function setBg(val) { state.bgColor = val; render(); }
-function setRadius(val) { state.borderRadius = +val; document.getElementById('radiusValue').textContent = val; render(); }
+function setBg(val) { state.bgColor = val; render(); persistState(); }
+function setRadius(val) { state.borderRadius = +val; document.getElementById('radiusValue').textContent = val; render(); persistState(); }
 
 function addTextLayer() {
   state.layers.push({
@@ -279,42 +450,32 @@ function addTextLayer() {
     font: 'Inter',
     size: Math.round(Math.min(state.canvasW, state.canvasH) * 0.3),
     color: '#ffffff',
-    offsetX: 0,
-    offsetY: 0,
-    visible: true
+    offsetX: 0, offsetY: 0, visible: true
   });
-  render();
-  buildLayersUI();
+  render(); buildLayersUI(); persistState();
 }
 
 function addSVGLayer() {
   const defSize = Math.round(Math.min(state.canvasW, state.canvasH) * 0.4);
   state.layers.push({
     id: state.nextId++,
-    type: 'svg',
-    content: '',
-    offsetX: 0,
-    offsetY: 0,
-    visible: true,
-    svgW: defSize,
-    svgH: defSize,
-    opacity: 1
+    type: 'svg', content: '',
+    offsetX: 0, offsetY: 0, visible: true,
+    svgW: defSize, svgH: defSize, opacity: 1
   });
-  render();
-  buildLayersUI();
+  render(); buildLayersUI(); persistState();
 }
 
 function removeLayer(id) {
   if (state.layers.length <= 1) return;
   state.layers = state.layers.filter(l => l.id !== id);
   svgCache.delete(id);
-  render();
-  buildLayersUI();
+  render(); buildLayersUI(); persistState();
 }
 
 function toggleLayer(id) {
   const layer = state.layers.find(l => l.id === id);
-  if (layer) { layer.visible = !layer.visible; render(); }
+  if (layer) { layer.visible = !layer.visible; render(); persistState(); }
 }
 
 function updateLayer(id, prop, value) {
@@ -328,13 +489,13 @@ function updateLayer(id, prop, value) {
     loadSVGLayer(layer);
   }
   render();
+  persistState();
 }
 
 function loadSVGLayer(layer) {
   if (!layer.content || layer.type !== 'svg') return;
   const svg = layer.content.trim();
   if (!svg.startsWith('<svg') && !svg.startsWith('<?xml')) return;
-
   const img = new Image();
   const url = 'data:image/svg+xml,' + encodeURIComponent(svg);
   img.onload = () => { svgCache.set(layer.id, { img, loaded: true }); render(); };
@@ -401,8 +562,7 @@ function render() {
       if (img) {
         ctx.save();
         ctx.globalAlpha = layer.opacity ?? 1;
-        const sw = layer.svgW || 100;
-        const sh = layer.svgH || 100;
+        const sw = layer.svgW || 100, sh = layer.svgH || 100;
         ctx.drawImage(img, w / 2 + layer.offsetX - sw / 2, h / 2 + layer.offsetY - sh / 2, sw, sh);
         ctx.restore();
       }
@@ -415,7 +575,6 @@ function render() {
   const ps = Math.min(maxPreview / w, maxPreview / h);
   canvas.style.width = (w * ps) + 'px';
   canvas.style.height = (h * ps) + 'px';
-
   document.getElementById('sizeLabel').textContent = `${w} \u00d7 ${h}  \u00b7  Live Preview`;
 }
 
@@ -438,13 +597,11 @@ function buildLayersUI() {
     const isSVG = layer.type === 'svg';
     const cached = svgCache.get(id);
 
-    html += `<div class="layer-card">`;
-    html += `<div class="layer-head">`;
+    html += `<div class="layer-card"><div class="layer-head">`;
     html += `<div class="layer-label"><span class="layer-num">#${idx+1}</span><span class="layer-badge ${isSVG?'svg':'text'}">${isSVG?'SVG':'T'}</span>`;
-    const displayName = isSVG
-      ? (layer.content ? `SVG` : `<span style="color:var(--text2);font-weight:400">empty</span>`)
-      : (layer.content || `<span style="color:var(--text2);font-weight:400">empty</span>`);
-    html += displayName;
+    html += isSVG
+      ? (layer.content ? 'SVG' : '<span style="color:var(--text2);font-weight:400">empty</span>')
+      : (layer.content || '<span style="color:var(--text2);font-weight:400">empty</span>');
     html += `</div><div class="layer-actions">`;
     html += `<button class="btn-eye ${isHidden?'hidden':''}" onclick="toggleLayer(${id})" title="Toggle visibility">${isHidden
       ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
@@ -453,16 +610,13 @@ function buildLayersUI() {
     html += `</div></div><div class="layer-grid">`;
 
     if (!isSVG) {
-      // ---- TEXT LAYER ----
       html += `<div class="full"><label>Text</label><input type="text" value="${escapeHtml(layer.content)}" oninput="updateLayer(${id},'content',this.value)" placeholder="Type something..."></div>`;
       html += `<div><label>Font</label><select onchange="updateLayer(${id},'font',this.value)">${['Inter','Roboto','Arial','Helvetica'].map(f => `<option ${layer.font===f?'selected':''}>${f}</option>`).join('')}</select></div>`;
       html += `<div><label>Size</label><div class="range-wrap"><input type="range" min="1" max="${Math.max(state.canvasW,state.canvasH)}" value="${layer.size}" oninput="updateLayer(${id},'size',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.size}</span></div></div>`;
       html += `<div><label>Color</label><input type="color" value="${layer.color}" oninput="updateLayer(${id},'color',this.value)"></div>`;
     } else {
-      // ---- SVG LAYER ----
       html += `<div class="full"><label>SVG Code</label><textarea onchange="updateLayer(${id},'content',this.value)" placeholder="<svg>...</svg>">${escapeHtml(layer.content)}</textarea></div>`;
       html += `<div class="full"><div class="upload-wrap"><span class="upload-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload .svg file</span><input type="file" accept=".svg" onchange="uploadSVG(${id},this)"></div>`;
-      // status
       const st = cached ? (cached.loaded ? 'loaded' : cached.error ? 'error' : 'loading') : '';
       if (st) html += `<div class="svg-status ${st}">${st==='loaded'?'\u2713 Loaded':st==='error'?'\u2717 Error':'\u23f3 Loading...'}</div>`;
       html += `</div>`;
@@ -471,10 +625,8 @@ function buildLayersUI() {
       html += `<div><label>Opacity</label><div class="range-wrap"><input type="range" min="0" max="1" step="0.05" value="${layer.opacity??1}" oninput="updateLayer(${id},'opacity',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.opacity??1}</span></div></div>`;
     }
 
-    // ---- SHARED: OFFSETS ----
     html += `<div><label>X Offset</label><div class="range-wrap"><input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetX}" oninput="updateLayer(${id},'offsetX',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.offsetX}</span></div></div>`;
     html += `<div><label>Y Offset</label><div class="range-wrap"><input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetY}" oninput="updateLayer(${id},'offsetY',this.value);this.nextElementSibling.textContent=this.value"><span class="range-val">${layer.offsetY}</span></div></div>`;
-
     html += `</div></div>`;
   }
 
@@ -510,8 +662,7 @@ async function doExport() {
   const w = Math.max(1, +document.getElementById('exportW').value || 48);
   const h = Math.max(1, +document.getElementById('exportH').value || 48);
   const s = document.createElement('canvas');
-  s.width = w;
-  s.height = h;
+  s.width = w; s.height = h;
   const c = s.getContext('2d');
   const sx = w / state.canvasW;
   const sy = h / state.canvasH;
@@ -522,7 +673,6 @@ async function doExport() {
   const r = Math.min(state.borderRadius * Math.min(sx, sy), w / 2, h / 2);
   roundRect(c, 0, 0, w, h, r);
   c.clip();
-
   c.fillStyle = state.bgColor;
   c.fillRect(0, 0, w, h);
 
@@ -539,8 +689,7 @@ async function doExport() {
       if (img) {
         c.save();
         c.globalAlpha = layer.opacity ?? 1;
-        const sw = (layer.svgW || 100) * sx;
-        const sh = (layer.svgH || 100) * sy;
+        const sw = (layer.svgW || 100) * sx, sh = (layer.svgH || 100) * sy;
         c.drawImage(img, w / 2 + layer.offsetX * sx - sw / 2, h / 2 + layer.offsetY * sy - sh / 2, sw, sh);
         c.restore();
       }
@@ -548,7 +697,6 @@ async function doExport() {
   }
 
   c.restore();
-
   const a = document.createElement('a');
   a.download = `favicon-${w}x${h}.png`;
   a.href = s.toDataURL('image/png');
