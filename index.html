@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Favicon Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0b0e;--panel:#121215;--card:#1a1a22;--border:#2a2a36;--text:#e8e8ed;--text2:#8a8a9a;--accent:#3b82f6;--accent-hover:#2563eb;--danger:#ef4444;--success:#22c55e;--font:'Inter',system-ui,-apple-system,sans-serif;--mono:'JetBrains Mono',monospace}
+body{background:var(--bg);color:var(--text);font-family:var(--font);height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.app{display:flex;gap:28px;padding:28px;height:100vh;width:100vw;max-width:1200px;margin:0 auto;align-items:stretch}
+
+/* Preview */
+.preview-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:16px;min-width:0}
+.canvas-wrap{position:relative;background:var(--card);border-radius:18px;padding:20px;box-shadow:0 0 0 1px var(--border),0 20px 60px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center}
+.canvas-wrap::before{content:'';position:absolute;inset:20px;border-radius:10px;background-image:linear-gradient(45deg,var(--border) 25%,transparent 25%),linear-gradient(-45deg,var(--border) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--border) 75%),linear-gradient(-45deg,transparent 75%,var(--border) 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;opacity:0.3;pointer-events:none}
+#previewCanvas{display:block;border-radius:6px;image-rendering:auto;position:relative;z-index:1;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+.canvas-label{font-size:11px;color:var(--text2);letter-spacing:.6px;text-transform:uppercase;font-weight:500;font-family:var(--mono)}
+.size-presets{display:flex;gap:4px;flex-wrap:wrap}
+.size-preset{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-size:10px;font-weight:500;font-family:var(--mono);cursor:pointer;transition:all .12s;min-width:32px}
+.size-preset:hover{background:var(--border);color:var(--text)}
+.size-preset.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* Controls */
+.controls-panel{flex:1;min-width:0;max-width:460px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;padding-right:4px}
+.controls-panel::-webkit-scrollbar{width:4px}
+.controls-panel::-webkit-scrollbar-track{background:transparent}
+.controls-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.section{background:var(--panel);border-radius:12px;border:1px solid var(--border);padding:16px}
+.section-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-title .count{color:var(--text2);font-weight:400}
+
+/* Fields */
+.row{display:flex;gap:10px;align-items:flex-end}
+.row .field{flex:1}
+.field{margin-bottom:0}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:4px;letter-spacing:.2px}
+.field input[type="text"],.field input[type="number"]{width:100%;padding:7px 9px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;font-family:var(--mono);outline:none;transition:border-color .15s}
+.field input[type="text"]:focus,.field input[type="number"]:focus{border-color:var(--accent)}
+.field input[type="color"]{width:100%;height:36px;border:1px solid var(--border);border-radius:6px;background:var(--card);cursor:pointer;padding:2px}
+.field select{width:100%;padding:7px 9px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;font-family:var(--font);outline:none;cursor:pointer;transition:border-color .15s}
+.field select:focus{border-color:var(--accent)}
+.field input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:var(--border);outline:none;cursor:pointer}
+.field input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--panel);box-shadow:0 0 0 1px var(--border);cursor:pointer;transition:all .1s}
+.field input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.field input[type="range"]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--panel);box-shadow:0 0 0 1px var(--border);cursor:pointer}
+.range-wrap{display:flex;align-items:center;gap:6px}
+.range-wrap input[type="range"]{flex:1}
+.range-val{font-size:11px;font-weight:500;color:var(--text);min-width:28px;text-align:right;font-family:var(--mono)}
+
+/* Layers */
+.layers-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.btn-add{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:none;background:var(--accent);color:#fff;font-size:11px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .12s}
+.btn-add:hover{background:var(--accent-hover)}
+
+/* Export */
+.export-row{display:flex;gap:10px;align-items:flex-end}
+.export-row .field{flex:1}
+.btn-export{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 20px;border-radius:7px;border:none;background:var(--success);color:#fff;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .12s;white-space:nowrap}
+.btn-export:hover{filter:brightness(1.1)}
+
+.layer-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;transition:border-color .15s}
+.layer-card:last-child{margin-bottom:0}
+.layer-card:hover{border-color:#3a3a48}
+.layer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.layer-label{font-size:11px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+.layer-num{color:var(--text2);font-weight:400}
+.layer-actions{display:flex;align-items:center;gap:4px}
+.btn-eye{background:none;border:none;color:var(--text2);cursor:pointer;padding:2px;border-radius:4px;display:flex;align-items:center;transition:all .1s}
+.btn-eye:hover{color:var(--text)}
+.btn-eye.hidden{opacity:.3}
+.btn-del{background:none;border:none;color:var(--text2);cursor:pointer;padding:2px 5px;border-radius:4px;font-size:13px;font-weight:500;font-family:var(--font);transition:all .1s;line-height:1}
+.btn-del:hover{color:var(--danger);background:rgba(239,68,68,.1)}
+.layer-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.layer-grid .full{grid-column:1/-1}
+.empty-state{text-align:center;padding:24px 16px;color:var(--text2);font-size:12px}
+
+/* Responsive */
+@media(max-width:860px){.app{flex-direction:column;align-items:center;padding:16px;gap:20px;height:auto;overflow-y:auto}.controls-panel{max-width:100%;padding-right:0}.canvas-wrap{padding:14px}}
+@media(max-width:480px){.app{padding:12px;gap:14px}.section{padding:12px}.layer-grid{grid-template-columns:1fr}.layer-grid .full{grid-column:1}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="preview-panel">
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="previewCanvas" width="512" height="512"></canvas>
+    </div>
+    <div class="canvas-label" id="sizeLabel">512 &times; 512</div>
+    <div class="download-row" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+      <div style="display:flex;gap:6px;width:100%;max-width:260px">
+        <div class="field" style="flex:1">
+          <label>Export W</label>
+          <input type="number" id="exportW" value="48" min="1" max="2048" style="font-size:11px;padding:5px 7px">
+        </div>
+        <div class="field" style="flex:1">
+          <label>Export H</label>
+          <input type="number" id="exportH" value="48" min="1" max="2048" style="font-size:11px;padding:5px 7px">
+        </div>
+        <div style="display:flex;align-items:flex-end">
+          <button class="btn-export" onclick="doExport()" style="padding:8px 16px;font-size:11px">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            PNG
+          </button>
+        </div>
+      </div>
+      <div class="size-presets" id="exportPresets" style="max-width:260px;justify-content:center"></div>
+    </div>
+  </div>
+
+  <div class="controls-panel">
+    <div class="section">
+      <div class="section-title">Canvas</div>
+      <div class="row" style="margin-bottom:10px">
+        <div class="field">
+          <label>Width</label>
+          <input type="number" id="canvasW" value="512" min="8" max="2048" onchange="setCanvasSize()">
+        </div>
+        <div class="field">
+          <label>Height</label>
+          <input type="number" id="canvasH" value="512" min="8" max="2048" onchange="setCanvasSize()">
+        </div>
+      </div>
+      <div class="size-presets" id="canvasPresets"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Style</div>
+      <div class="row">
+        <div class="field">
+          <label>Background</label>
+          <input type="color" id="bgColor" value="#2563eb" oninput="setBg(this.value)">
+        </div>
+        <div class="field">
+          <label>Border Radius</label>
+          <div class="range-wrap">
+            <input type="range" id="borderRadius" min="0" max="120" value="24" oninput="setRadius(this.value)">
+            <span class="range-val" id="radiusValue">24</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="layers-header">
+        <div class="section-title" style="margin-bottom:0">Layers <span class="count" id="layerCount"></span></div>
+        <button class="btn-add" onclick="addLayer()">+ Add</button>
+      </div>
+      <div id="layersContainer"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const state = {
+  canvasW: 512,
+  canvasH: 512,
+  bgColor: '#2563eb',
+  borderRadius: 24,
+  layers: [],
+  nextId: 1
+};
+
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas.getContext('2d');
+
+const PRESETS = [16, 32, 48, 64, 128, 256, 512];
+
+function init() {
+  state.layers.push({
+    id: state.nextId++,
+    content: 'VK',
+    font: 'Inter',
+    size: 180,
+    color: '#ffffff',
+    offsetX: 125,
+    offsetY: 125,
+    visible: true
+  });
+  buildExportPresets();
+  buildCanvasPresets();
+  render();
+}
+
+function buildExportPresets() {
+  const el = document.getElementById('exportPresets');
+  el.innerHTML = PRESETS.map(s =>
+    `<button class="size-preset ${s===48?'active':''}" onclick="setExportSize(${s},${s})">${s}</button>`
+  ).join('');
+}
+
+function buildCanvasPresets() {
+  const el = document.getElementById('canvasPresets');
+  el.innerHTML = PRESETS.map(s =>
+    `<button class="size-preset ${s===512?'active':''}" onclick="setCanvasSizeTo(${s},${s})">${s}</button>`
+  ).join('');
+}
+
+function setExportSize(w, h) {
+  document.getElementById('exportW').value = w;
+  document.getElementById('exportH').value = h;
+  document.querySelectorAll('#exportPresets .size-preset').forEach(b => {
+    b.classList.toggle('active', +b.textContent === w && w === h);
+  });
+}
+
+function setCanvasSizeTo(w, h) {
+  document.getElementById('canvasW').value = w;
+  document.getElementById('canvasH').value = h;
+  setCanvasSize();
+  document.querySelectorAll('#canvasPresets .size-preset').forEach(b => {
+    b.classList.toggle('active', +b.textContent === w && w === h);
+  });
+}
+
+function setCanvasSize() {
+  const w = Math.max(8, +document.getElementById('canvasW').value || 512);
+  const h = Math.max(8, +document.getElementById('canvasH').value || 512);
+  const ratio = w / state.canvasW;
+  const ratioH = h / state.canvasH;
+  const avgRatio = (ratio + ratioH) / 2;
+
+  state.canvasW = w;
+  state.canvasH = h;
+  canvas.width = w;
+  canvas.height = h;
+
+  for (const layer of state.layers) {
+    layer.offsetX = Math.round(layer.offsetX * avgRatio);
+    layer.offsetY = Math.round(layer.offsetY * avgRatio);
+    layer.size = Math.round(layer.size * avgRatio);
+  }
+
+  document.getElementById('canvasW').value = w;
+  document.getElementById('canvasH').value = h;
+  render();
+}
+
+function setBg(val) { state.bgColor = val; render(); }
+function setRadius(val) { state.borderRadius = +val; document.getElementById('radiusValue').textContent = val; render(); }
+
+function addLayer() {
+  state.layers.push({
+    id: state.nextId++,
+    content: '',
+    font: 'Inter',
+    size: Math.round(Math.min(state.canvasW, state.canvasH) * 0.3),
+    color: '#ffffff',
+    offsetX: 0,
+    offsetY: 0,
+    visible: true
+  });
+  render();
+}
+
+function removeLayer(id) {
+  if (state.layers.length <= 1) return;
+  state.layers = state.layers.filter(l => l.id !== id);
+  render();
+}
+
+function toggleLayer(id) {
+  const layer = state.layers.find(l => l.id === id);
+  if (layer) { layer.visible = !layer.visible; render(); }
+}
+
+function updateLayer(id, prop, value) {
+  const layer = state.layers.find(l => l.id === id);
+  if (layer) {
+    if (prop === 'size' || prop === 'offsetX' || prop === 'offsetY') value = +value;
+    layer[prop] = value;
+    render();
+  }
+}
+
+function roundRect(c, x, y, w, h, r) {
+  r = Math.min(r, w / 2, h / 2);
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r);
+  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  c.lineTo(x + r, y + h);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r);
+  c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+}
+
+function render() {
+  const w = state.canvasW, h = state.canvasH;
+  ctx.clearRect(0, 0, w, h);
+  ctx.save();
+
+  const r = Math.min(state.borderRadius, w / 2, h / 2);
+  roundRect(ctx, 0, 0, w, h, r);
+  ctx.clip();
+
+  ctx.fillStyle = state.bgColor;
+  ctx.fillRect(0, 0, w, h);
+
+  for (const layer of state.layers) {
+    if (!layer.visible || !layer.content) continue;
+    ctx.font = `${layer.size}px ${layer.font}, Arial, Helvetica, sans-serif`;
+    ctx.fillStyle = layer.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(layer.content, w / 2 + layer.offsetX, h / 2 + layer.offsetY);
+  }
+
+  ctx.restore();
+
+  const maxPreview = 260;
+  const scale = Math.min(maxPreview / w, maxPreview / h);
+  canvas.style.width = (w * scale) + 'px';
+  canvas.style.height = (h * scale) + 'px';
+
+  document.getElementById('sizeLabel').textContent = `${w} \u00d7 ${h}  \u00b7  Live Preview`;
+
+  buildLayersUI();
+}
+
+function buildLayersUI() {
+  const container = document.getElementById('layersContainer');
+  document.getElementById('layerCount').textContent = `(${state.layers.length})`;
+
+  if (state.layers.length === 0) {
+    container.innerHTML = '<div class="empty-state">No layers. Click "+ Add" to start.</div>';
+    return;
+  }
+
+  const maxOff = Math.max(state.canvasW, state.canvasH) / 2;
+  let html = '';
+  for (const layer of state.layers) {
+    const id = layer.id;
+    const idx = state.layers.indexOf(layer);
+    const isHidden = !layer.visible;
+    html += `
+      <div class="layer-card">
+        <div class="layer-head">
+          <div class="layer-label">
+            <span class="layer-num">#${idx + 1}</span>
+            ${layer.content || '<span style="color:var(--text2);font-weight:400">empty</span>'}
+          </div>
+          <div class="layer-actions">
+            <button class="btn-eye ${isHidden?'hidden':''}" onclick="toggleLayer(${id})" title="Toggle visibility">
+              ${isHidden
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'}
+            </button>
+            <button class="btn-del" onclick="removeLayer(${id})" title="Delete">\u2715</button>
+          </div>
+        </div>
+        <div class="layer-grid">
+          <div class="full">
+            <label>Text</label>
+            <input type="text" value="${escapeHtml(layer.content)}" oninput="updateLayer(${id},'content',this.value)" placeholder="Type something...">
+          </div>
+          <div>
+            <label>Font</label>
+            <select onchange="updateLayer(${id},'font',this.value)">
+              ${['Inter','Roboto','Arial','Helvetica'].map(f =>
+                `<option ${layer.font===f?'selected':''}>${f}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div>
+            <label>Size</label>
+            <div class="range-wrap">
+              <input type="range" min="1" max="${Math.max(state.canvasW, state.canvasH)}" value="${layer.size}" oninput="updateLayer(${id},'size',this.value); this.nextElementSibling.textContent=this.value">
+              <span class="range-val">${layer.size}</span>
+            </div>
+          </div>
+          <div>
+            <label>Color</label>
+            <input type="color" value="${layer.color}" oninput="updateLayer(${id},'color',this.value)">
+          </div>
+          <div>
+            <label>X Offset</label>
+            <div class="range-wrap">
+              <input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetX}" oninput="updateLayer(${id},'offsetX',this.value); this.nextElementSibling.textContent=this.value">
+              <span class="range-val">${layer.offsetX}</span>
+            </div>
+          </div>
+          <div>
+            <label>Y Offset</label>
+            <div class="range-wrap">
+              <input type="range" min="${-maxOff}" max="${maxOff}" value="${layer.offsetY}" oninput="updateLayer(${id},'offsetY',this.value); this.nextElementSibling.textContent=this.value">
+              <span class="range-val">${layer.offsetY}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function doExport() {
+  const w = Math.max(1, +document.getElementById('exportW').value || 48);
+  const h = Math.max(1, +document.getElementById('exportH').value || 48);
+  const s = document.createElement('canvas');
+  s.width = w;
+  s.height = h;
+  const c = s.getContext('2d');
+  const sx = w / state.canvasW;
+  const sy = h / state.canvasH;
+
+  c.clearRect(0, 0, w, h);
+  c.save();
+
+  const r = Math.min(state.borderRadius * Math.min(sx, sy), w / 2, h / 2);
+  roundRect(c, 0, 0, w, h, r);
+  c.clip();
+
+  c.fillStyle = state.bgColor;
+  c.fillRect(0, 0, w, h);
+
+  for (const layer of state.layers) {
+    if (!layer.visible || !layer.content) continue;
+    c.font = `${layer.size * sx}px ${layer.font}, Arial, Helvetica, sans-serif`;
+    c.fillStyle = layer.color;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText(layer.content, w / 2 + layer.offsetX * sx, h / 2 + layer.offsetY * sy);
+  }
+
+  c.restore();
+
+  const a = document.createElement('a');
+  a.download = `favicon-${w}x${h}.png`;
+  a.href = s.toDataURL('image/png');
+  a.click();
+}
+
+document.fonts.ready.then(() => render());
+init();
+</script>
+</body>
+</html>
